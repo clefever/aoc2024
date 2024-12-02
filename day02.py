@@ -1,7 +1,7 @@
 import adventofcode
 
 
-def part1(input):
+def part1(input: list[list[int]]) -> int:
     """
     >>> part1([[7, 6, 4, 2, 1], [1, 2, 7, 8, 9], [9, 7, 6, 2, 1],\
                [1, 3, 2, 4, 5], [8, 6, 4, 4, 1], [1, 3, 6, 7, 9]])
@@ -10,7 +10,7 @@ def part1(input):
     return sum(is_safe(nums) for nums in input)
 
 
-def part2(input):
+def part2(input: list[list[int]]) -> int:
     """
     >>> part2([[7, 6, 4, 2, 1], [1, 2, 7, 8, 9], [9, 7, 6, 2, 1],\
                [1, 3, 2, 4, 5], [8, 6, 4, 4, 1], [1, 3, 6, 7, 9]])
@@ -19,13 +19,13 @@ def part2(input):
     return sum(any(is_safe_tolerant(nums, i) for i in range(len(nums))) for nums in input)
 
 
-def is_safe(list):
+def is_safe(list: list[int]) -> bool:
     return (all(abs(list[i] - list[i-1]) <= 3 for i in range(1, len(list))) and
            (all(list[i] > list[i-1] for i in range(1, len(list))) or
            all(list[i] < list[i-1] for i in range(1, len(list)))))
 
 
-def is_safe_tolerant(list, i):
+def is_safe_tolerant(list: list[int], i: int) -> bool:
     copy = list.copy()
     copy.pop(i)
     return is_safe(copy)

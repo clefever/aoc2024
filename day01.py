@@ -1,7 +1,7 @@
 import adventofcode
 
 
-def part1(input):
+def part1(input: list[list[int]]) -> int:
     """
     >>> part1([[3, 4, 2, 1, 3, 3], [4, 3, 5, 3, 9, 3]])
     11
@@ -11,7 +11,7 @@ def part1(input):
     return sum(abs(input[0][i] - input[1][i]) for i in range(len(input[0])))
 
 
-def part2(input):
+def part2(input: list[list[int]]) -> int:
     """
     >>> part2([[3, 4, 2, 1, 3, 3], [4, 3, 5, 3, 9, 3]])
     31
