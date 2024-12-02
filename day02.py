@@ -7,25 +7,7 @@ def part1(input):
                [1, 3, 2, 4, 5], [8, 6, 4, 4, 1], [1, 3, 6, 7, 9]])
     2
     """
-    sum = 0
-    for nums in input:
-        is_good = True
-        positives = 0
-        negatives = 0
-        zeros = 0
-        for i in range(len(nums)-1):
-            if abs(nums[i+1] - nums[i]) > 3:
-                is_good = False
-
-            if nums[i+1] > nums[i]:
-                positives += 1
-            elif nums[i+1] < nums[i]:
-                negatives += 1
-            else:
-                zeros += 1
-        if is_good and (positives == 0 or negatives == 0) and zeros == 0:
-            sum += 1
-    return sum
+    return sum(is_safe(nums) for nums in input)
 
 
 def part2(input):
@@ -34,56 +16,19 @@ def part2(input):
                [1, 3, 2, 4, 5], [8, 6, 4, 4, 1], [1, 3, 6, 7, 9]])
     4
     """
-    sum = 0
-    for nums in input:
-        solved = False
-        for y in range(len(nums)):
-            copy = nums.copy()
-            copy.pop(y)
-            is_good = True
-            positives = 0
-            negatives = 0
-            zeros = 0
+    return sum(any(is_safe_tolerant(nums, i) for i in range(len(nums))) for nums in input)
 
-            for i in range(len(nums)-1):
-                if abs(nums[i+1] - nums[i]) > 3:
-                    is_good = False
 
-                if nums[i+1] > nums[i]:
-                    positives += 1
-                elif nums[i+1] < nums[i]:
-                    negatives += 1
-                else:
-                    zeros += 1
-            if is_good and (positives == 0 or negatives == 0) and zeros == 0:
-                sum += 1
-                solved = True
-                break
+def is_safe(list):
+    return (all(abs(list[i] - list[i-1]) <= 3 for i in range(1, len(list))) and
+           (all(list[i] > list[i-1] for i in range(1, len(list))) or
+           all(list[i] < list[i-1] for i in range(1, len(list)))))
 
-        if solved == False: 
-            for y in range(len(nums)):
-                copy = nums.copy()
-                copy.pop(y)
-                is_good = True
-                positives = 0
-                negatives = 0
-                zeros = 0
 
-                for i in range(len(copy)-1):
-                    if abs(copy[i+1] - copy[i]) > 3:
-                        is_good = False
-
-                    if copy[i+1] > copy[i]:
-                        positives += 1
-                    elif copy[i+1] < copy[i]:
-                        negatives += 1
-                    else:
-                        zeros += 1
-                if is_good and (positives == 0 or negatives == 0) and zeros == 0:
-                    sum += 1
-                    break
-
-    return sum
+def is_safe_tolerant(list, i):
+    copy = list.copy()
+    copy.pop(i)
+    return is_safe(copy)
 
 
 def main():
