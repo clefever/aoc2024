@@ -12,16 +12,7 @@ def part1(rules: list[list[int]], updates: list[list[int]]) -> int:
                [61,13,29], [97,13,75,29,47]])
     143
     """
-    sum = 0
-    for update in updates:
-        satifies = True
-        for page in update:
-            if not satisfies_rules(page, rules, update):
-                satifies = False
-                break
-        if satifies:
-            sum += update[floor(len(update)/2)]
-    return sum
+    return sum(update[floor(len(update)/2)] for update in updates if all(satisfies_rules(page, rules, update) for page in update))
 
 
 def part2(rules: list[list[int]], updates: list[list[int]]) -> int:
@@ -33,17 +24,9 @@ def part2(rules: list[list[int]], updates: list[list[int]]) -> int:
                [61,13,29], [97,13,75,29,47]])
     123
     """
-    sum = 0
-    bad_updates = []
-    for update in updates:
-        for page in update:
-            if not satisfies_rules(page, rules, update):
-                bad_updates.append(update)
-                break
-    for update in bad_updates:
-        update = sorted(update, key=cmp_to_key(lambda item1, item2: compare(item1, item2, rules)))
-        sum += update[floor(len(update)/2)]
-    return sum
+    bad_updates = [sorted(update, key=cmp_to_key(lambda item1, item2: compare(item1, item2, rules)))
+                   for update in updates if not all(satisfies_rules(page, rules, update) for page in update)]
+    return sum(update[floor(len(update)/2)] for update in bad_updates)
 
 
 def satisfies_rules(page: int, rules: list[list[int]], update: list[int]) -> bool:
@@ -59,7 +42,7 @@ def satisfies_rules(page: int, rules: list[list[int]], update: list[int]) -> boo
     return True
 
 
-def compare(page1, page2, rules):
+def compare(page1: int, page2: int, rules: list[list[int]]) -> int:
     for rule in rules:
         if rule[0] == page1 and rule[1] == page2:
             return -1
