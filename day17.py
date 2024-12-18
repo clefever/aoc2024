@@ -6,8 +6,7 @@ def part1(reg_a: int, reg_b: int, reg_c: int, program: list[int]) -> str:
     >>> part1(729, 0, 0, [0, 1, 5, 4, 3, 0])
     '4,6,3,5,6,3,5,2,1,0'
     """
-    output = run_program(reg_a, reg_b, reg_c, program)
-    return ",".join([str(num) for num in output])
+    return ",".join([str(num) for num in run_program(reg_a, reg_b, reg_c, program)])
 
 
 def part2(program: list[int]) -> int:
@@ -15,15 +14,15 @@ def part2(program: list[int]) -> int:
     >>> part2([0, 3, 5, 4, 3, 0])
     117440
     """
-    length = 4
-    reg_a = int('4532', 8)
+    length = 1
+    reg_a = 0
     while True:
         output = run_program(reg_a, 0, 0, program)
         if output == program:
             return reg_a
         elif output == program[-length:]:
-            length += 4
-            reg_a = int(oct(reg_a) + '0000', 8)
+            length += 1
+            reg_a *= 8
         else:
             reg_a += 1
 
